@@ -1,0 +1,75 @@
+/* Background Hero */
+.hero-section {
+    margin: 35px;
+    background: linear-gradient(135deg, #0062ff, #001b80);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20rem;
+    border-radius: 20px;
+}
+
+/* Kartu Form */
+.all-flight{
+    margin-top: 10rem;
+}
+
+.flight-card {
+    max-width: 920px;
+    border-radius: 1rem;
+    position: relative;
+}
+
+/* Jenis perjalanan */
+.trip-type label {
+    margin-right: 15px;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.trip-type input[type="radio"],
+.trip-type input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Ikon tukar posisi */
+.swap-icon {
+    font-size: 1.3rem;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.swap-icon:hover {
+    transform: rotate(180deg);
+    transition: 0.3s ease;
+}
+
+/* Tombol Cari */
+.search-btn {
+    height: 48px;
+    border-radius: 8px;
+    font-weight: 600;
+    background-color: #2563eb;
+}
+
+.search-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* Input dan Select */
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .flight-card form {
+        flex-direction: column;
+    }
+
+    .swap-icon {
+        display: none;
+    }
+}
