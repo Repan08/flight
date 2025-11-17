@@ -26,10 +26,10 @@
             <div class="d-flex align-items-center">
                 <!-- Auth::check() -> ngecek uda login/belum -->
                 @if (Auth::check())
-                    <a href="" class="btn btn-danger">Logout</a>
+                    <a href="{{ route('logout') }}" type="button" class="btn btn-danger">Logout</a>
                 @else
-                    <a href="{{ route('login') }}" type="button" class="btn btn-link px-3 me-2">Login</a>
-                    <a href="{{ route('signup') }}" type="button" class="btn btn-primary me-3">Sign up</a>
+                <a href="{{ route('login') }}" type="button" class="btn btn-link px-3 me-2">Login</a>
+                <a href="{{ route('signup') }}" type="button" class="btn btn-primary me-3">Sign up</a>
                 @endif
             </div>
         </nav>

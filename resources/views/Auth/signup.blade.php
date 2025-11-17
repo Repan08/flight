@@ -25,13 +25,16 @@
                 </h4>
 
                 <div class="row g-3 align-items-end">
-                    <form method="POST" action="{{ route('signup.send_data') }}">
+                    <form class="w-50 d-block mx-auto my-5" method="POST" action="{{ route('signup.send_data') }}">
+                        @if (Session::get('failed'))
+                            <div class="alert alert-danger my-3">{{ Session::get('failed') }}</div>
+                        @endif
                         @csrf
                         <div class="row mb-4">
                             <div class="col">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" id="email" class="form-control @error('email') is-invalid @enderror"
-                                    name="email" placeholder="Email">
+                                    name="email" placeholder="Email" value="{{ old('email') }}">
                                 @error('email')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
@@ -40,8 +43,8 @@
                                 <div class="form-outline" class="row g-3 align-items-end">
                                     <label for="text" class="form-label">Nama Lengkap</label>
                                     <input type="text" id="name"
-                                        class="form-control @error('name') is-invalid @enderror"
-                                        name="name" placeholder="Nama Lengkap"/>
+                                        class="form-control @error('name') is-invalid @enderror" name="name"
+                                        placeholder="Nama Lengkap" value="{{ old('namaLengkap') }}"/>
                                     @error('name')
                                         <div class="text-danger small">{{ $message }}</div>
                                     @enderror
@@ -52,7 +55,7 @@
                                 <label for="phone_number" class="form-label">Nomor Telepon</label>
                                 <input type="text" id="phone_number"
                                     class="form-control @error('phone_number') is-invalid @enderror" name="phone_number"
-                                    placeholder="Nomor Telepon">
+                                    placeholder="Nomor Telepon" value="{{ old('nomorTelepon') }}">
                                 @error('phone_number')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
@@ -63,7 +66,7 @@
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" id="password"
                                     class="form-control @error('password') is-invalid @enderror" name="password"
-                                    placeholder="Password">
+                                    placeholder="Password" value="{{ old('password') }}">
                                 @error('password')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror

@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|email:dns',
             'password' => 'required|string|min:8',
             'phone_number' => ['required', 'regex:/^(?:\+62|62|0)[2-9][0-9]{7,11}$/']
         ], [
@@ -45,7 +45,7 @@ class UserController extends Controller
         if ($createData) {
             return redirect()->route('login')->with('success', 'Berhasil registrasi, silahkan login');
         } else {
-            return redirect()->back()->with('error', 'Gagal registrasi, silahkan coba lagi');
+            return redirect()->route('signup')->with('error', 'Gagal registrasi, silahkan coba lagi');
         }
     }
 
@@ -77,8 +77,9 @@ class UserController extends Controller
 
     public function logout()
     {
+        //Auth::logout() : hapus sesi login
         Auth::logout();
-        return redirect()->route('home')->with('logout', 'Anda telah logout, silahkan login kembali untuk akses lengkap');
+        return redirect()->route('home')->with('logout', 'Anda sudah Logout! silahkan login kembali untuk akses lengkap');
     }
     /**
      * Show the form for creating a new resource.

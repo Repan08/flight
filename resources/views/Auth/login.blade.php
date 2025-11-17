@@ -33,13 +33,10 @@
                                     <i class="bi bi-airplane-fill me-2"></i>Login Flight
                                 </h4>
 
-                                @if (Session::get('success'))
-                                    <div class="alert alert-success">{{ Session::get('success') }}</div>
-                                @endif
-                                @if (Session::get('error'))
-                                    <div class="alert alert-danger">{{ Session::get('error') }}</div>
-                                @endif
-                                <form method="POST" action="{{ route('auth') }}">
+                                <form class="d-block mx-auto my-5" method="POST" action="{{ route('auth') }}">
+                                    @if (Session::get('success'))
+                                        <div class="alert alert-success">{{ Session::get('success') }}</div>
+                                    @endif
                                     @csrf
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
