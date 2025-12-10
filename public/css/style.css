@@ -1,0 +1,251 @@
+:root{
+    --brand: #0b5ed7;
+    --brand-dark: #0a58c7;
+    --brand-darker: #083b8f;
+    --brand-light-bg: #e7f0ff;
+}
+
+/* Background Hero */
+.hero-section {
+    margin: 35px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-darker));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20rem;
+    border-radius: 20px;
+}
+
+/* Kartu Form */
+.all-flight{
+    margin-top: 10rem;
+}
+
+.flight-card {
+    max-width: 920px;
+    border-radius: 1rem;
+    position: relative;
+}
+
+/* Jenis perjalanan */
+.trip-type label {
+    margin-right: 15px;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.trip-type input[type="radio"],
+.trip-type input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Ikon tukar posisi */
+.swap-icon {
+    font-size: 1.3rem;
+    color: var(--brand);
+    cursor: pointer;
+}
+
+.swap-icon:hover {
+    transform: rotate(180deg);
+    transition: 0.3s ease;
+}
+
+/* Tombol Cari */
+.search-btn {
+    height: 48px;
+    border-radius: 8px;
+    font-weight: 600;
+    background-color: var(--brand);
+}
+
+.search-btn:hover {
+    background-color: var(--brand-dark);
+}
+
+/* Input dan Select */
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .flight-card form {
+        flex-direction: column;
+    }
+
+    .swap-icon {
+        display: none;
+    }
+}
+
+/* style.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+h1 {
+    color: #333;
+    font-weight: 600;
+}
+
+.filter-bar {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.price-summary .price-card {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+}
+
+.price-summary .price-card.active {
+    background-color: var(--brand-light-bg);
+    border: 1px solid var(--brand);
+}
+
+.price-summary .price-card h5 {
+    color: var(--brand);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.price-summary .price-card p {
+    margin-bottom: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.flight-card .card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+}
+
+.flight-card .card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.airline-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.flight-time .departure-time,
+.flight-time .arrival-time {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.airport-code {
+    font-size: 14px;
+    color: #666;
+}
+
+.flight-duration {
+    text-align: center;
+}
+
+.duration {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.flight-path {
+    position: relative;
+    height: 2px;
+    background-color: #ddd;
+    margin: 10px 0;
+}
+
+.path-line {
+    height: 2px;
+    background-color: #0b5ed7;
+    width: 100%;
+}
+
+.path-line {
+    height: 2px;
+    background-color: var(--brand);
+    width: 100%;
+}
+.path-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--brand);
+    top: -3px;
+}
+.path-dot.end {
+    right: 0;
+}
+
+.flight-type-text {
+    font-size: 12px;
+    color: #666;
+    margin-top: 10px;
+}
+
+.flight-price .price {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--brand);
+}
+
+.trip-type {
+    font-size: 14px;
+    color: #666;
+}
+
+.login-banner .card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.login-banner .card-title {
+    color: #333;
+    font-weight: 600;
+}
+
+.login-banner .card-text {
+    color: #666;
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .filter-bar .row > div {
+        margin-bottom: 10px;
+    }
+    
+    .price-summary .row > div {
+        margin-bottom: 15px;
+    }
+    
+    .flight-card .card-body .row > div {
+        margin-bottom: 15px;
+    }
+    
+    .flight-duration {
+        order: 3;
+        margin-top: 15px;
+    }
+    
+    .flight-price {
+        order: 4;
+    }
+    
+    .flight-card .btn {
+        order: 5;
+    }
+}
