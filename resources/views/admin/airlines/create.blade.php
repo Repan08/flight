@@ -33,7 +33,7 @@
 
             </div>
 
-            <button type="submit" class="btn btn-success mt-2">{{ isset($airline) ? 'Update' : 'Simpan' }} Maskapai</button>
+            <button type="submit" class="btn btn-success mt-2"> Tambah Maskapai</button>
             <a href="{{ route('admin.airlines.index') }}" class="btn btn-secondary">Batal</a>
         </form>
     </div>

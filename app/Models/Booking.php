@@ -9,7 +9,14 @@ class Booking extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['user_id', 'flight_id', 'payment_id', 'promo_id', 'total_price', 'booking_status'];
+    protected $fillable = [
+        'user_id', 
+        'flight_id', 
+        'payment_id', 
+        'promo_id', 
+        'total_price', 
+        'booking_status'
+    ];
 
     public function flight()
     {

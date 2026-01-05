@@ -9,5 +9,10 @@ class Promo extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['promo_code', 'discount', 'type', 'actived'];
+    protected $fillable = [
+        'promo_code', 
+        'discount', 
+        'type', 
+        'actived'
+    ];
 }

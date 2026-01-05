@@ -15,12 +15,6 @@
             </div>
         @endif
 
-        @if(isset($searchParams['trip']) && $searchParams['trip'] == 'pp')
-            <div class="alert alert-warning mb-4">
-                <strong>Catatan:</strong> Ini adalah pencarian Pulang-Pergi. Penerbangan pulang akan ditampilkan di bawah jika
-                tersedia.
-            </div>
-        @endif
         {{-- Ini akan filter data $flights secara client-side tanpa mengubah controller --}}
         <div class="filter-controls mb-4" style="display: none;" id="filterControls">
             <div class="row">
@@ -100,7 +94,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         {{-- Upgrade: Tombol "Pilih" dengan fungsi redirect ke halaman booking --}}
-                                        <form action="{{ route('flights.payment', ['id' => $index]) }}" method="GET"
+                                        <form action="{{ route('flight.payment', ['id' => $index]) }}" method="GET"
                                             style="display: inline;">
                                             <button type="submit" class="btn btn-primary w-100">Pilih</button>
                                         </form>

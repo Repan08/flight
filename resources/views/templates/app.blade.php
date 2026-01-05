@@ -43,8 +43,7 @@
                                     <a class="dropdown-item" href="{{ route('admin.airlines.index') }}">Kelola Maskapai</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="">Jadwal Penerbangan</a>
-                                    {{-- Menggunakan movies.index sebagai placeholder untuk flights/schedules --}}
+                                    <a class="dropdown-item" href="{{ route('admin.flight.index') }}">Jadwal Penerbangan</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="">Data Petugas</a>

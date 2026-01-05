@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('ticket_id')->constrained('tickets');
-            $table->enum('methode', ['credit_card','bank_transfer','ewallet','qris']);
+            $table->enum('methode', ['credit_card','bank_transfer','ewallet']);
             $table->decimal('amount');
             $table->enum('status', ['pending', 'paid', 'failed', 'refunded']);
             $table->timestamps();

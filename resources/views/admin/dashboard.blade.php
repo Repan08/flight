@@ -1,331 +1,217 @@
 @extends('templates.app')
 
 @section('content')
-<div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="h3 mb-4 fw-bold text-primary">✈️ Dashboard Admin Penerbangan</h1>
+<div class="container-fluid py-3">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h4 fw-bold text-primary mb-0">✈️ Dashboard Penerbangan</h1>
+        <div>
+            <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal" data-bs-target="#createAircraftModal">
+                <i class="fas fa-plane me-1"></i>Pesawat
+            </button>
+            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#createFlightModal">
+                <i class="fas fa-calendar-plus me-1"></i>Jadwal
+            </button>
         </div>
     </div>
 
-    {{-- Pesawat Management --}}
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="card shadow border-0 rounded-3">
-                <div class="card-header bg-primary text-white py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 fw-bold"><i class="fas fa-plane me-2"></i>Kelola Pesawat</h5>
-                        {{-- <span class="badge bg-light text-primary">{{ $aircrafts->count() ?? 0 }} Pesawat</span> --}}
+    <!-- Stats -->
+    <div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
+        <div class="col">
+            <div class="card border-start border-primary border-3 p-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="text-muted small mb-1">Pesawat</h6>
+                        <h4 class="mb-0">0</h4>
                     </div>
+                    <i class="fas fa-plane text-primary mt-1"></i>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Kode Pesawat</th>
-                                    <th>Nama Pesawat</th>
-                                    <th>Tipe</th>
-                                    <th>Kapasitas</th>
-                                    <th>Maskapai</th>
-                                    <th>Status</th>
-                                    <th class="text-end">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($aircrafts ?? [] as $aircraft)
-                                <tr>
-                                    <td><strong>{{ $aircraft->code ?? 'AC-001' }}</strong></td>
-                                    <td>{{ $aircraft->name ?? 'Boeing 737' }}</td>
-                                    <td><span class="badge bg-info">{{ $aircraft->type ?? 'Narrow-body' }}</span></td>
-                                    <td>{{ $aircraft->capacity ?? 180 }} penumpang</td>
-                                    <td>{{ $aircraft->airline ?? 'Garuda Indonesia' }}</td>
-                                    <td>
-                                        <span class="badge {{ ($aircraft->status ?? 'active') == 'active' ? 'bg-success' : 'bg-secondary' }}">
-                                            {{ $aircraft->status ?? 'Active' }}
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <a href="#" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createAircraftModal">
-                                                <i class="fas fa-plus"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-outline-info">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-outline-warning">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-outline-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
-                                
-                                {{-- Placeholder jika tidak ada data --}}
-                                @if(empty($aircrafts) || count($aircrafts) == 0)
-                                <tr>
-                                    <td colspan="7" class="text-center text-muted py-4">
-                                        <i class="fas fa-plane-slash fa-2x mb-3"></i>
-                                        <p class="mb-0">Belum ada data pesawat</p>
-                                    </td>
-                                </tr>
-                                @endif
-                            </tbody>
-                        </table>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-start border-success border-3 p-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="text-muted small mb-1">Jadwal</h6>
+                        <h4 class="mb-0">0</h4>
                     </div>
-                    
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <div>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAircraftModal">
-                                <i class="fas fa-plus me-2"></i>Tambah Pesawat Baru
-                            </button>
-                        </div>
-                        <nav>
-                            <ul class="pagination mb-0">
-                                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                            </ul>
-                        </nav>
+                    <i class="fas fa-calendar-alt text-success mt-1"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-start border-info border-3 p-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="text-muted small mb-1">Kapasitas</h6>
+                        <h4 class="mb-0">0%</h4>
                     </div>
+                    <i class="fas fa-users text-info mt-1"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-start border-warning border-3 p-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="text-muted small mb-1">Aktif</h6>
+                        <h4 class="mb-0">0</h4>
+                    </div>
+                    <i class="fas fa-check-circle text-warning mt-1"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Jadwal Penerbangan --}}
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow border-0 rounded-3">
-                <div class="card-header bg-success text-white py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 fw-bold"><i class="fas fa-calendar-alt me-2"></i>Jadwal Penerbangan</h5>
-                        {{-- <span class="badge bg-light text-success">{{ $flights->count() ?? 0 }} Jadwal</span> --}}
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Kode Penerbangan</th>
-                                    <th>Rute</th>
-                                    <th>Pesawat</th>
-                                    <th>Waktu</th>
-                                    <th>Harga</th>
-                                    <th>Kursi Tersedia</th>
-                                    <th>Status</th>
-                                    <th class="text-end">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($flights ?? [] as $flight)
-                                <tr>
-                                    <td><strong>{{ $flight->code ?? 'GA-201' }}</strong></td>
-                                    <td>
-                                        <div class="small">{{ $flight->origin ?? 'CGK' }} → {{ $flight->destination ?? 'SUB' }}</div>
-                                        <div class="text-muted">{{ $flight->origin_name ?? 'Jakarta' }} → {{ $flight->destination_name ?? 'Surabaya' }}</div>
-                                    </td>
-                                    <td>{{ $flight->aircraft ?? 'Boeing 737' }}</td>
-                                    <td>
-                                        <div class="small">{{ $flight->departure_time ?? '08:00' }}</div>
-                                        <div class="text-muted">{{ $flight->arrival_time ?? '10:00' }}</div>
-                                    </td>
-                                    <td>Rp {{ number_format($flight->price ?? 1500000, 0, ',', '.') }}</td>
-                                    <td>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-info" style="width: {{ ($flight->available_seats ?? 120) / ($flight->total_seats ?? 180) * 100 }}%"></div>
-                                        </div>
-                                        <small>{{ $flight->available_seats ?? 120 }} / {{ $flight->total_seats ?? 180 }}</small>
-                                    </td>
-                                    <td>
-                                        <span class="badge {{ ($flight->status ?? 'scheduled') == 'scheduled' ? 'bg-primary' : 'bg-warning' }}">
-                                            {{ $flight->status ?? 'Scheduled' }}
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <a href="#" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createFlightModal">
-                                                <i class="fas fa-plus"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-outline-info">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-outline-warning">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-outline-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
-                                
-                                @if(empty($flights) || count($flights) == 0)
-                                <tr>
-                                    <td colspan="8" class="text-center text-muted py-4">
-                                        <i class="fas fa-calendar-times fa-2x mb-3"></i>
-                                        <p class="mb-0">Belum ada jadwal penerbangan</p>
-                                    </td>
-                                </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <div>
-                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createFlightModal">
-                                <i class="fas fa-plus me-2"></i>Tambah Jadwal Baru
-                            </button>
-                        </div>
-                        <nav>
-                            <ul class="pagination mb-0">
-                                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
+    <!-- Pesawat Table -->
+    <div class="card mb-4">
+        <div class="card-header bg-white py-3">
+            <h6 class="mb-0 fw-bold"><i class="fas fa-plane me-2"></i>Daftar Pesawat</h6>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Tipe</th>
+                        <th>Kapasitas</th>
+                        <th>Status</th>
+                        <th class="text-end">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data akan muncul di sini -->
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            <i class="fas fa-plane-slash me-2"></i>Belum ada data pesawat
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Jadwal Table -->
+    <div class="card">
+        <div class="card-header bg-white py-3">
+            <h6 class="mb-0 fw-bold"><i class="fas fa-calendar-alt me-2"></i>Jadwal Penerbangan</h6>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Kode</th>
+                        <th>Rute</th>
+                        <th>Waktu</th>
+                        <th>Harga</th>
+                        <th>Status</th>
+                        <th class="text-end">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data akan muncul di sini -->
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            <i class="fas fa-calendar-times me-2"></i>Belum ada jadwal penerbangan
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
-{{-- Modal: Create Aircraft --}}
-<div class="modal fade" id="createAircraftModal" tabindex="-1">
+<!-- Modal Pesawat -->
+<div class="modal fade" id="createAircraftModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title"><i class="fas fa-plane me-2"></i>Tambah Pesawat Baru</h5>
+                <h6 class="modal-title mb-0"><i class="fas fa-plane me-2"></i>Tambah Pesawat</h6>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <form>
+            {{-- <form action="{{ route('aircrafts.store') }}" method="POST"> --}}
+                @csrf
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Kode Pesawat</label>
-                        <input type="text" class="form-control" placeholder="AC-001" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Nama Pesawat</label>
-                        <input type="text" class="form-control" placeholder="Boeing 737-800" required>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tipe</label>
-                            <select class="form-select">
-                                <option>Narrow-body</option>
-                                <option>Wide-body</option>
-                                <option>Regional Jet</option>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <label class="form-label small">Kode Pesawat</label>
+                            <input type="text" name="code" class="form-control form-control-sm" placeholder="AC-001" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small">Nama Pesawat</label>
+                            <input type="text" name="name" class="form-control form-control-sm" placeholder="Boeing 737" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small">Tipe</label>
+                            <select name="type" class="form-select form-select-sm" required>
+                                <option value="Narrow-body">Narrow-body</option>
+                                <option value="Wide-body">Wide-body</option>
+                                <option value="Regional Jet">Regional Jet</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Kapasitas</label>
-                            <input type="number" class="form-control" placeholder="180" required>
+                        <div class="col-md-6">
+                            <label class="form-label small">Kapasitas</label>
+                            <input type="number" name="capacity" class="form-control form-control-sm" placeholder="180" required>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-{{-- Modal: Create Flight --}}
-<div class="modal fade" id="createFlightModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+<!-- Modal Jadwal -->
+<div class="modal fade" id="createFlightModal">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="fas fa-calendar-plus me-2"></i>Tambah Jadwal Penerbangan</h5>
+                <h6 class="modal-title mb-0"><i class="fas fa-calendar-plus me-2"></i>Tambah Jadwal</h6>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <form>
+            {{-- <form action="{{ route('flights.store') }}" method="POST"> --}}
+                @csrf
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Kode Penerbangan</label>
-                            <input type="text" class="form-control" placeholder="GA-201" required>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <label class="form-label small">Kode Penerbangan</label>
+                            <input type="text" name="code" class="form-control form-control-sm" placeholder="GA-201" required>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Pesawat</label>
-                            <select class="form-select">
-                                <option>Boeing 737-800</option>
-                                <option>Airbus A320</option>
+                        <div class="col-md-6">
+                            <label class="form-label small">Pesawat</label>
+                            <select name="aircraft_id" class="form-select form-select-sm" required>
+                                <option value="">Pilih Pesawat</option>
+                                <!-- Options akan diisi dari database -->
                             </select>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Bandara Asal</label>
-                            <input type="text" class="form-control" placeholder="CGK - Jakarta" required>
+                        <div class="col-md-6">
+                            <label class="form-label small">Asal</label>
+                            <input type="text" name="origin" class="form-control form-control-sm" placeholder="CGK" required>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Bandara Tujuan</label>
-                            <input type="text" class="form-control" placeholder="SUB - Surabaya" required>
+                        <div class="col-md-6">
+                            <label class="form-label small">Tujuan</label>
+                            <input type="text" name="destination" class="form-control form-control-sm" placeholder="SUB" required>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Waktu Keberangkatan</label>
-                            <input type="datetime-local" class="form-control" required>
+                        <div class="col-md-6">
+                            <label class="form-label small">Waktu Keberangkatan</label>
+                            <input type="datetime-local" name="departure_time" class="form-control form-control-sm" required>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Waktu Kedatangan</label>
-                            <input type="datetime-local" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Harga</label>
-                            <input type="number" class="form-control" placeholder="1500000" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-select">
-                                <option value="scheduled">Scheduled</option>
-                                <option value="delayed">Delayed</option>
-                                <option value="cancelled">Cancelled</option>
-                            </select>
+                        <div class="col-md-6">
+                            <label class="form-label small">Harga</label>
+                            <input type="number" name="price" class="form-control form-control-sm" placeholder="1500000" required>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success">Simpan Jadwal</button>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-sm btn-success">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 @endsection
-
-@push('styles')
-<style>
-.card {
-    border: none;
-}
-.table th {
-    border-bottom: 2px solid #dee2e6;
-}
-.progress {
-    width: 100px;
-    display: inline-block;
-    margin-right: 10px;
-}
-.btn-group-sm .btn {
-    padding: 0.25rem 0.5rem;
-}
-</style>
-@endpush

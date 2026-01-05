@@ -62,4 +62,10 @@ class PaymentController extends Controller
     {
         //
     }
+
+    public function payment($id)
+    {
+        // Kirim data $id ke view (misalnya, untuk menampilkan detail penerbangan)
+        return view('flight.payment', compact('id'));
+    }
 }

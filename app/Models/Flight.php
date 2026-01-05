@@ -9,5 +9,12 @@ class Flight extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['airplane_id', 'origin', 'destination', 'departure_time', 'arrival_time', 'price'];
+    protected $fillable = [
+        'airplane_id', 
+        'origin', 
+        'destination', 
+        'departure_time', 
+        'arrival_time', 
+        'price'
+    ];
 }

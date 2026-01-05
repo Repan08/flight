@@ -9,5 +9,10 @@ class Payment extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['ticket_id', 'method', 'status', 'amount'];
+    protected $fillable = [
+        'ticket_id', 
+        'method', 
+        'status', 
+        'amount'
+    ];
 }

@@ -7,10 +7,11 @@
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-
-    <div class="d-flex justify-content-between mb-3">
-        <a href="{{ route('admin.airlines.create') }}" class="btn btn-primary">Tambah Maskapai Baru</a>
-    </div>
+        <div class="d-flex justify-content-end">
+            {{-- <a href="{{ route('admin.airlines.export') }}" class="btn btn-secondary me-2">Export (.xlsx)</a> --}}
+            <a href="{{ route('admin.airlines.trash') }}" class="btn btn-secondary me-2 mb-3">Data Sampah</a>
+            <a href="{{ route('admin.airlines.create') }}" class="btn btn-primary mb-3">Tambah Data Maskapai</a>
+        </div>
 
     <table class="table table-bordered">
         <thead>
@@ -27,11 +28,13 @@
             @foreach ($airlines as $airline)
             <tr>
                 <td>{{ $airline->id }}</td>
-                <td><img src="{{ $airline->logo }}" alt="{{ $airline->name }}" style="width: 50px; height: auto;"></td>
+                <td>
+                    <img src="{{ asset('storage/' . $airline->logo) }}" alt="{{ $airline->name }}" style="width: 50px; height: auto;">
+                </td>
                 <td>{{ $airline->name }}</td>
                 <td>{{ $airline->code }}</td>
                 <td>
-                    {{ $airline->deleted_at ? '🗑️ Dihapus' : '✅ Aktif' }}
+                    {{ $airline->deleted_at ? '🚫 Non-Aktif' : '✅ Aktif' }}
                 </td>
                 <td>
                     @if ($airline->deleted_at)
@@ -50,7 +53,7 @@
                         {{-- CRUD Edit --}}
                         <a href="{{ route('admin.airlines.edit', $airline->id) }}" class="btn btn-sm btn-warning">Edit</a>
                         {{-- CRUD Delete (Soft Delete) --}}
-                        <form action="{{ route('admin.airlines.destroy', $airline->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini? Data akan dipindahkan ke keranjang sampah.');">
+                        <form action="{{ route('admin.airlines.delete', $airline->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">Hapus</button>

@@ -12,5 +12,9 @@ class Airline extends Model
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'code', 'logo'];
+    protected $fillable = [
+        'name',
+        'code', 
+        'logo'
+    ];
 }

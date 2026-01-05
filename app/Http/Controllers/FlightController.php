@@ -4,13 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Flight;
 use App\Models\Airplane;
-use App\Models\Airline;
-use App\Models\Booking; // <<< DITAMBAHKAN
-use App\Models\Passenger; // <<< DITAMBAHKAN (Untuk resolving relasi 'passengers')
-use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class FlightController extends Controller
 {
@@ -74,16 +69,38 @@ class FlightController extends Controller
     {
         $request->validate([
             'airplane_id' => 'required|exists:airplanes,id',
-            'origin' => 'required|string',
-            'destination' => 'required|string|different:origin',
+            'departure_city' => 'required|string|max:255',
+            'arrival_city' => 'required|string|max:255',
             'departure_time' => 'required|date',
             'arrival_time' => 'required|date|after:departure_time',
-            'price' => 'required|integer|min:10000',
+            'price' => 'required|numeric|min:0',
+        ], [
+            'airplane_id.required' => 'Pesawat wajib dipilih.',
+            'airplane_id.exists' => 'Pesawat yang dipilih tidak valid.',
+            'departure_city.required' => 'Kota keberangkatan wajib diisi.',
+            'arrival_city.required' => 'Kota kedatangan wajib diisi.',
+            'departure_time.required' => 'Waktu keberangkatan wajib diisi.',
+            'arrival_time.required' => 'Waktu kedatangan wajib diisi.',
+            'arrival_time.after' => 'Waktu kedatangan harus setelah waktu keberangkatan.',
+            'price.required' => 'Harga tiket wajib diisi.',
+            'price.numeric' => 'Harga tiket harus berupa angka.',
+            'price.min' => 'Harga tiket tidak boleh kurang dari 0.',
         ]);
 
-        Flight::create($request->all());
+        $flight = Flight::create([
+            'airplane_id' => $request->airplane_id,
+            'departure_city' => $request->departure_city,
+            'arrival_city' => $request->arrival_city,
+            'departure_time' => $request->departure_time,
+            'arrival_time' => $request->arrival_time,
+            'price' => $request->price,
+        ]);
 
-        return redirect()->route('admin.flights.index')->with('success', 'Penerbangan berhasil ditambahkan.');
+        if ($flight) {
+            return redirect()->route('admin.flight.index')->with('success', 'Berhasil menambahkan data penerbangan.');
+        } else {
+            return redirect()->back()->with('error', 'Gagal menambahkan data penerbangan.');
+        }
     }
 
     /**
@@ -189,10 +206,11 @@ class FlightController extends Controller
         }
 
         // Simpan ke session untuk results() jika perlu
-        session(['flights' => $flights, 'searchParams' => $request->all()]);
+        session(['flight' => $flights, 'searchParams' => $request->all()]);
 
         // Kirim data ke view hasil pencarian
-        return view('flights.result', compact('flights') + [
+        return view('flight.result', [
+            'flights' => $flights,
             'departure' => $departure,
             'arrival' => $arrival,
             'searchParams' => $request->all(),
@@ -244,58 +262,7 @@ class FlightController extends Controller
         // Ambil data dari session (dari search)
         $flights = session('flights', []);
         $searchParams = session('searchParams', []);
-        return view('flights.result', compact('flights', 'searchParams'));
+        return view('flight.result', compact('flights', 'searchParams'));
     }
 
-    public function payment($id)
-    {
-        // Kirim data $id ke view (misalnya, untuk menampilkan detail penerbangan)
-        return view('flights.payment', compact('id'));
-    }
-
-    // FlightController.php (ASUMSI PERBAIKAN)
-
-// ... (sebelumnya)
-
-public function confirm(Request $request, $id)
-{
-    // Ambil data dari form (metode pembayaran)
-    $payment_method = $request->input('payment_method');
-    $amount = $request->input('amount') ?? 0;
-    if ($payment_method == 'transfer') {
-        // ... (logic upload bukti transfer, sudah benar)
-        if ($request->hasFile('proof')) {
-            $path = $request->file('proof')->store('public/payments');
-            $publicPath = str_replace('public/', 'storage/', $path);
-
-            return view('flights.transfer-confirmed', [
-                'booking_id' => $id,
-                'amount' => $amount,
-                'proof_path' => $publicPath,
-            ]);
-        }
-
-        return view('flights.confirm', compact('id', 'payment_method'));
-    }
-
-    // Kasus 2: Kartu kredit atau e-wallet (Pembayaran Sukses)
-    if ($payment_method == 'credit_card' || $payment_method == 'e-wallet') {
-        return redirect()->route('flights.confirm', ['id' => $id, 'payment_status' => 'success']);
-    }
-
-    // Kasus fallback (untuk menampilkan form CC/E-Wallet jika belum disubmit)
-    return view('flights.confirm', compact('id', 'payment_method'));
-}
-
-// ... (setelahnya)
-    public function bookingsHistory()
-    {
-        // Ambil semua pemesanan yang dimiliki oleh user yang sedang login
-        $bookings = Auth::user()->bookings()
-                     ->with('flight', 'passengers') // Load relasi flight dan passengers
-                     ->latest() // Urutkan dari yang terbaru
-                     ->paginate(10); // Gunakan paginasi
-
-        return view('user.history', compact('bookings'));
-    }
 }

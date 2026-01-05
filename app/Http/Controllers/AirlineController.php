@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Storage;
 
 class AirlineController extends Controller
 {
+    // 1. INDEX: Menampilkan data aktif SAJA (tidak termasuk data sampah)
     public function index()
     {
-        $airlines = Airline::withTrashed()->latest()->paginate(10);
+        $airlines = Airline::latest()->paginate(10); 
 
         return view('admin.airlines.index', compact('airlines'));
     }
@@ -28,58 +29,62 @@ class AirlineController extends Controller
             'code' => 'required|string|max:10|unique:airlines,code',
             'logo' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Max 2MB
         ], [
-            'name' => 'Nama maskapai wajib diisi.',
-            'logo' => 'Logo maskapai wajib diunggah.',
-            'logo' => 'File yang diunggah harus berupa gambar.',
-            'logo' => 'Format logo harus berupa jpeg, png, atau jpg.',
-            'logo' => 'Ukuran logo tidak boleh lebih dari 2MB.',
+            'name.required' => 'Nama maskapai wajib diisi.',
+            'code.required' => 'Kode maskapai wajib diisi.',
+            'logo.required' => 'Logo maskapai wajib diunggah.',
+            'logo.image' => 'File yang diunggah harus berupa gambar.',
+            'logo.mimes' => 'Format logo harus berupa jpeg, png, atau jpg.',
+            'logo.max' => 'Ukuran logo tidak boleh lebih dari 2MB.',
         ]);
 
         $logo = $request->file('logo');
-        $namaFile = rand(1, 10) . '-logo.' . $logo->getClientOriginalExtension();
+        $namaFile = time() . '-' . rand(1, 100) . '.' . $logo->getClientOriginalExtension();
         $path = $logo->storeAs('logos', $namaFile, 'public');
-
-        Airline::create([
+        
+        $createData = Airline::create([
             'name' => $request->name,
             'code' => $request->code,
-            'logo' => $path,
+            'logo' => $path, 
         ]);
 
-        return redirect()->route('admin.airlines.index')->with('success', 'Maskapai baru berhasil ditambahkan!');
+        if ($createData) {
+            return redirect()->route('admin.airlines.index')->with('success', 'Berhasil membuat data');
+        } else {
+            return redirect()->back()->with('error', 'Gagal menambahkan data!');
+        }
     }
 
     public function show(Airline $airline)
     {
         return view('admin.airlines.show', compact('airline'));
     }
-    
+
     public function edit(Airline $airline)
     {
         return view('admin.airlines.edit', compact('airline'));
     }
 
-    // 5. UPDATE: Memperbarui data yang ada
     public function update(Request $request, Airline $airline)
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:airlines,name,' . $airline->id,
             'code' => 'required|string|max:10|unique:airlines,code,' . $airline->id,
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // nullable karena boleh tidak diubah
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $data = $request->only(['name', 'code']);
 
         if ($request->hasFile('logo')) {
-            // Hapus logo lama (jika ada) sebelum upload baru
             if ($airline->logo) {
-                // Konversi URL public ke path storage
-                $oldPath = str_replace('/storage', 'public', $airline->logo);
-                if (Storage::exists($oldPath)) {
-                    Storage::delete($oldPath);
+                if (Storage::disk('public')->exists($airline->logo)) {
+                    Storage::disk('public')->delete($airline->logo);
                 }
             }
-            $path = $request->file('logo')->store('public/logos');
-            $data['logo'] = Storage::url($path);
+            
+            $logo = $request->file('logo');
+            $namaFile = time() . '-' . rand(1, 100) . '.' . $logo->getClientOriginalExtension();
+            $path = $logo->storeAs('logos', $namaFile, 'public');
+            $data['logo'] = $path; // Simpan path relatif baru
         }
 
         $airline->update($data);
@@ -87,35 +92,38 @@ class AirlineController extends Controller
         return redirect()->route('admin.airlines.index')->with('success', 'Maskapai berhasil diperbarui!');
     }
 
-    // 6. DELETE (SoftDeletes): Menghapus sementara data (ke keranjang sampah)
     public function destroy(Airline $airline)
     {
-        $airline->delete(); // Soft Delete
-        return redirect()->route('admin.airlines.index')->with('success', 'Maskapai berhasil dihapus (soft deleted)!');
+        $airline->delete();
+        return redirect()->route('admin.airlines.index')->with('success', 'Maskapai berhasil dinon-aktifkan (masuk tempat sampah)!');
     }
 
-    // 7. RESTORE (SoftDeletes): Mengembalikan data yang sudah dihapus sementara
+    public function trash()
+    {
+        $airlineTrash = Airline::onlyTrashed()->get();
+        return view('admin.airlines.trash', compact('airlineTrash'));
+    }
+
     public function restore($id)
     {
-        $airline = Airline::withTrashed()->findOrFail($id);
+        $airline = Airline::withTrashed()->findOrFail($id); 
         $airline->restore(); // Restore
+        
         return redirect()->route('admin.airlines.index')->with('success', 'Maskapai berhasil dikembalikan!');
     }
 
-    // 8. FORCE DELETE (SoftDeletes): Menghapus permanen data
     public function forceDelete($id)
     {
         $airline = Airline::withTrashed()->findOrFail($id);
-
-        // Hapus file logo dari storage
+        
         if ($airline->logo) {
-            $path = str_replace('/storage', 'public', $airline->logo);
-            if (Storage::exists($path)) {
-                Storage::delete($path);
+            if (Storage::disk('public')->exists($airline->logo)) {
+                Storage::disk('public')->delete($airline->logo);
             }
         }
+        
+        $airline->forceDelete(); // Menghapus permanen dari database
 
-        $airline->forceDelete(); // Force Delete
-        return redirect()->route('admin.airlines.index')->with('success', 'Maskapai berhasil dihapus PERMANEN!');
+        return redirect()->route('admin.airlines.trash')->with('success', 'Maskapai berhasil dihapus permanen!');
     }
 }

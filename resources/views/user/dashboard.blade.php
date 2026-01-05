@@ -5,6 +5,7 @@
     <div class="hero-section container mb-10">
         <div class="all-flight container text-center text-white py-5">
             <h2 class="fw-bold mb-3">Halo, {{ Auth::user()->name ?? 'Pengguna' }}! 👋</h2>
+            
             <p>
                 <i class="fas fa-shield-alt"></i> Kelola Pemesanan Anda |
                 <i class="fas fa-headset ms-2"></i> Cari Penerbangan Baru

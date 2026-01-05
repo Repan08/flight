@@ -95,7 +95,7 @@
                             <div class="divider" role="presentation"></div>
 
                             <div class="text-center">
-                                <small class="text-muted">Belum punya akun? <a href="#">Daftar</a> • <a href="{{ route('home') }}">Kembali</a></small>
+                                <small class="text-muted">Belum punya akun? <a href="{{ route ('signup') }}">Daftar</a> • <a href="{{ route('home') }}">Kembali</a></small>
                             </div>
                         </form>
                     </div>

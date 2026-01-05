@@ -9,5 +9,9 @@ class Airplane extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['airline_id', 'model', 'seat_capacity'];
+    protected $fillable = [
+        'airline_id', 
+        'model', 
+        'seat_capacity'
+    ];
 }
